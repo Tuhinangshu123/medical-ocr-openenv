@@ -1,0 +1,65 @@
+================================================================================
+                    YOUR READY-TO-RUN COMMANDS
+================================================================================
+
+STEP 1: INITIALIZE GIT
+-----------------------
+git init
+git config user.name "Tuhinangshu Das"
+git config user.email "tuhinangshudas610@gmail.com"
+git add .
+git commit -m "Initial commit: Medical OCR OpenEnv"
+git branch -M main
+
+STEP 2: CREATE GITHUB REPO (in browser)
+----------------------------------------
+Go to: https://github.com/new
+Name: medical-ocr-openenv
+Public: YES
+Click "Create repository"
+
+STEP 3: PUSH TO GITHUB
+-----------------------
+git remote add origin https://github.com/Tuhinangshu123/medical-ocr-openenv.git
+git push -u origin main
+
+STEP 4: CREATE HF SPACE (in browser)
+-------------------------------------
+Go to: https://huggingface.co/new-space
+Owner: ryozoryo
+Name: medical-ocr-openenv
+SDK: Docker (IMPORTANT!)
+Click "Create Space"
+Add tag: "openenv" in Settings
+
+STEP 5: LOGIN TO HF
+--------------------
+pip install huggingface_hub
+huggingface-cli login
+
+STEP 6: PUSH TO HF SPACE
+-------------------------
+git remote add space https://huggingface.co/spaces/ryozoryo/medical-ocr-openenv
+git push space main
+
+STEP 7: ADD SECRETS (in browser)
+---------------------------------
+Go to: https://huggingface.co/spaces/ryozoryo/medical-ocr-openenv/settings
+
+Add 3 secrets:
+1. OPENAI_API_KEY = your-openai-api-key-here
+2. MODEL_NAME = gpt-4
+3. API_BASE_URL = https://api.openai.com/v1
+
+STEP 8: WAIT FOR BUILD (10 min)
+--------------------------------
+Watch: https://huggingface.co/spaces/ryozoryo/medical-ocr-openenv/logs
+
+STEP 9: TEST
+------------
+curl https://ryozoryo-medical-ocr-openenv.hf.space/
+
+YOUR SUBMISSION URL:
+https://ryozoryo-medical-ocr-openenv.hf.space
+
+================================================================================

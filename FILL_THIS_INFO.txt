@@ -1,0 +1,62 @@
+================================================================================
+                    FILL IN YOUR INFORMATION
+================================================================================
+
+Please provide the following information. I'll use this to create personalized
+deployment scripts and documentation for you.
+
+1. YOUR GITHUB USERNAME:
+   _______________________________________
+   (Example: johndoe)
+   Get it from: https://github.com/settings/profile
+
+2. YOUR HUGGINGFACE USERNAME:
+   _______________________________________
+   (Example: johndoe)
+   Get it from: https://huggingface.co/settings/account
+
+3. YOUR NAME (for git commits):
+   _______________________________________
+   (Example: John Doe)
+
+4. YOUR EMAIL (for git commits):
+   _______________________________________
+   (Example: john@example.com)
+
+5. YOUR OPENAI API KEY (optional, can add later):
+   _______________________________________
+   (Example: sk-proj-...)
+   Get it from: https://platform.openai.com/api-keys
+   Leave blank if you don't have one yet.
+
+6. PREFERRED MODEL (optional):
+   _______________________________________
+   (Example: gpt-4 or gpt-3.5-turbo)
+   Default: gpt-4
+
+================================================================================
+                    WHAT I'LL CREATE FOR YOU
+================================================================================
+
+Once you provide this info, I'll generate:
+
+✅ Personalized deployment scripts with YOUR usernames
+✅ Git configuration with YOUR name and email
+✅ README with YOUR repository links
+✅ Testing scripts with YOUR Space URL
+✅ Complete setup commands ready to copy-paste
+
+================================================================================
+                    HOW TO PROVIDE THIS INFO
+================================================================================
+
+Just reply with:
+
+GitHub: your-github-username
+HuggingFace: your-hf-username
+Name: Your Full Name
+Email: your@email.com
+API Key: sk-... (or "none" if you don't have one)
+Model: gpt-4 (or gpt-3.5-turbo)
+
+================================================================================
