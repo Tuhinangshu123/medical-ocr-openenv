@@ -1,3 +1,17 @@
+---
+title: Medical OCR OpenEnv
+emoji: 💊
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+tags:
+  - openenv
+  - medical
+  - ocr
+  - healthcare
+---
+
 # Medical Prescription OCR - OpenEnv Environment
 
 An OpenEnv-compliant environment for training and evaluating AI agents on medical prescription OCR and data extraction tasks.
