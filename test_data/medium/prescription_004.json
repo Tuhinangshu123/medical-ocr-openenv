@@ -1,0 +1,9 @@
+{
+  "text": "Dr. Wong\nPatient: Thomas Lee\n51 years\n23/03/2024\n\nDiabetes management:\nMetformin 850mg - BD with meals\nGlimepiride 2mg - before breakfast\nMonitor blood sugar fasting & PP\n\nDiet control important\nDr Wong",
+  "fields": {
+    "patient_name": "Thomas Lee",
+    "medications": ["Metformin", "Glimepiride"],
+    "dosage": ["850mg", "2mg"],
+    "doctor_name": "Dr. Wong"
+  }
+}

@@ -1,0 +1,39 @@
+name: medical-prescription-ocr
+version: 1.0.0
+description: AI environment for medical prescription OCR and data extraction
+author: Tuhinangshu Das
+tags:
+  - healthcare
+  - ocr
+  - medical
+  - computer-vision
+  - openenv
+
+observation_space:
+  type: dict
+  properties:
+    image_data: string  # base64 encoded prescription image
+    ocr_text: string    # extracted text
+    extracted_fields: object  # structured medical data
+    confidence: float   # OCR confidence score
+    
+action_space:
+  type: string
+  enum:
+    - process_image
+    - extract_fields
+    - validate_output
+    - retry_with_ensemble
+    
+reward_range: [0.0, 1.0]
+
+tasks:
+  - id: easy_printed_prescription
+    description: Extract text from clear, printed prescription
+    difficulty: easy
+  - id: medium_handwritten_prescription
+    description: Extract text from handwritten prescription
+    difficulty: medium
+  - id: hard_complex_prescription
+    description: Extract and structure data from complex multi-drug prescription
+    difficulty: hard

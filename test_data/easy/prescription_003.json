@@ -1,0 +1,9 @@
+{
+  "text": "Healthcare Clinic\nDr. Lisa Anderson\n\nName: Robert Wilson\nAge: 28 years\nDate: 22/03/2024\n\nMedications:\n- Cetirizine 10mg (once daily for allergy)\n- Nasal spray (twice daily)\n\nDuration: 10 days\n\nDr. Lisa Anderson\nMBBS",
+  "fields": {
+    "patient_name": "Robert Wilson",
+    "medications": ["Cetirizine", "Nasal spray"],
+    "dosage": ["10mg", ""],
+    "doctor_name": "Dr. Lisa Anderson"
+  }
+}

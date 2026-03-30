@@ -1,0 +1,9 @@
+{
+  "text": "Dr. Sarah Johnson\nGeneral Physician\nReg No: 12345\n\nPatient Name: John Smith\nAge: 45 years\nDate: 15/03/2024\n\nRx:\n1. Amoxicillin 500mg\n   Take 1 tablet twice daily for 7 days\n\n2. Paracetamol 500mg\n   Take 1 tablet when needed for fever\n\nDr. Sarah Johnson\nSignature",
+  "fields": {
+    "patient_name": "John Smith",
+    "medications": ["Amoxicillin", "Paracetamol"],
+    "dosage": ["500mg", "500mg"],
+    "doctor_name": "Dr. Sarah Johnson"
+  }
+}

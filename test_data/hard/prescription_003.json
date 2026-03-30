@@ -1,0 +1,9 @@
+{
+  "text": "Dr Johnson\nPatient: Williams, George 63y\n21/3/24\n\nCOPD exacerbation:\nPrednisolone 40mg OD x 5d\nAzithromycin 500mg OD x 3d\nSalbutamol inhaler 2 puffs QID\nIpratropium inhaler 2 puffs TDS\nTheophylline 200mg BD\n\nO2 if SpO2<90%\nSpirometry 4w\nPulmonary rehab referral\n\nDr Johnson Pulmonology",
+  "fields": {
+    "patient_name": "George Williams",
+    "medications": ["Prednisolone", "Azithromycin", "Salbutamol inhaler", "Ipratropium inhaler", "Theophylline"],
+    "dosage": ["40mg", "500mg", "2 puffs", "2 puffs", "200mg"],
+    "doctor_name": "Dr Johnson"
+  }
+}

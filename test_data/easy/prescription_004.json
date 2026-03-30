@@ -1,0 +1,9 @@
+{
+  "text": "Dr. James Miller\nFamily Medicine\nClinic Phone: 555-0123\n\nPatient: Maria Garcia\nAge: 55\nDate: 25/03/2024\n\nRx:\nMetformin 500mg - Take with breakfast and dinner\nAspirin 75mg - Take once daily\n\nNext visit: 2 weeks\n\nDr. James Miller",
+  "fields": {
+    "patient_name": "Maria Garcia",
+    "medications": ["Metformin", "Aspirin"],
+    "dosage": ["500mg", "75mg"],
+    "doctor_name": "Dr. James Miller"
+  }
+}

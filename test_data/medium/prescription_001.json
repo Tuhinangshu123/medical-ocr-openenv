@@ -1,0 +1,9 @@
+{
+  "text": "Dr Kumar\nPatient - Priya Sharma\n35 yrs\n18/3/24\n\nRx\nAzithromycin 500mg - 1 tab daily x 3 days\nCough syrup 10ml - TDS\nSteam inhalation\n\nReview if fever persists\n\nDr Kumar",
+  "fields": {
+    "patient_name": "Priya Sharma",
+    "medications": ["Azithromycin", "Cough syrup"],
+    "dosage": ["500mg", "10ml"],
+    "doctor_name": "Dr Kumar"
+  }
+}

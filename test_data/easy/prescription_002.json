@@ -1,0 +1,9 @@
+{
+  "text": "City Medical Center\nDr. Michael Brown\nMBBS, MD\n\nPatient: Emily Davis\nAge: 32\nDate: 20/03/2024\n\nPrescription:\n1. Ibuprofen 400mg - Take twice daily after meals\n2. Vitamin D3 1000IU - Take once daily\n\nFollow up after 2 weeks\n\nDr. Michael Brown",
+  "fields": {
+    "patient_name": "Emily Davis",
+    "medications": ["Ibuprofen", "Vitamin D3"],
+    "dosage": ["400mg", "1000IU"],
+    "doctor_name": "Dr. Michael Brown"
+  }
+}

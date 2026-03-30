@@ -1,0 +1,9 @@
+{
+  "text": "Dr Patel\nName: Sarah O'Connor\nAge 29\n21/3/24\n\nRx:\nDoxycycline 100mg BD x 7d\nProbiotics - OD\nAvoid dairy 2hrs before/after antibiotic\n\nF/up 1 week\nDr. Patel",
+  "fields": {
+    "patient_name": "Sarah O'Connor",
+    "medications": ["Doxycycline", "Probiotics"],
+    "dosage": ["100mg", ""],
+    "doctor_name": "Dr. Patel"
+  }
+}

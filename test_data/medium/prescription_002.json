@@ -1,0 +1,9 @@
+{
+  "text": "Dr. Thompson\nPt: Alex Martinez, 42y\nDate: 19/03/2024\n\nDiagnosis: Hypertension\n\nMeds:\nLisinopril 10mg - morning\nAmlodipine 5mg - evening\nCheck BP weekly\n\nDr Thompson",
+  "fields": {
+    "patient_name": "Alex Martinez",
+    "medications": ["Lisinopril", "Amlodipine"],
+    "dosage": ["10mg", "5mg"],
+    "doctor_name": "Dr. Thompson"
+  }
+}

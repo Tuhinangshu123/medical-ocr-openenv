@@ -1,0 +1,9 @@
+{
+  "text": "Dr. Lee\nMr. Anderson Paul 71y\n25/3/24\n\nHeart failure NYHA II:\nFurosemide 40mg mane\nSpironolactone 25mg OD\nBisoprolol 2.5mg OD\nEnalapril 10mg BD\nDigoxin 0.25mg OD\nWarfarin - as per INR\n\nINR weekly, target 2-3\nEcho, BNP 3m\nDaily wt monitoring\nFluid restrict 1.5L/d\nLow Na diet\n\nDr Lee Cardiology\nEmergency if SOB worsens",
+  "fields": {
+    "patient_name": "Paul Anderson",
+    "medications": ["Furosemide", "Spironolactone", "Bisoprolol", "Enalapril", "Digoxin", "Warfarin"],
+    "dosage": ["40mg", "25mg", "2.5mg", "10mg", "0.25mg", ""],
+    "doctor_name": "Dr. Lee"
+  }
+}

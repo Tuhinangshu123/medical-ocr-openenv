@@ -1,0 +1,9 @@
+{
+  "text": "Dr. Martinez\nMs. Chen Wei 47\n20/3/24\n\nRheumatoid arthritis:\nMethotrexate 15mg weekly (Monday)\nFolic acid 5mg (except Monday)\nHydroxychloroquine 200mg BD\nPrednisolone 5mg OD (taper)\nCalcium+VitD OD\n\nCBC, LFT, KFT monthly\nOphthalmology review 6m\nPhysiotherapy\n\nDr Martinez Rheumatology",
+  "fields": {
+    "patient_name": "Chen Wei",
+    "medications": ["Methotrexate", "Folic acid", "Hydroxychloroquine", "Prednisolone", "Calcium+VitD"],
+    "dosage": ["15mg", "5mg", "200mg", "5mg", ""],
+    "doctor_name": "Dr. Martinez"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "text": "Dr. Gupta\nMrs. Patel Sunita 52\n23/3/24\n\nType 2 DM + HTN + Dyslipidemia:\nMetformin XR 1000mg BD\nGliclazide MR 60mg OD\nTelmisartan 40mg OD\nAmlodipine 5mg OD\nRosuvastatin 10mg HS\nAspirin 75mg OD\n\nHbA1c, Lipids 3m\nFundoscopy, Foot exam today\nDiet: 1500 kcal, low GI\nExercise 30min daily\n\nDr Gupta Endocrinology",
+  "fields": {
+    "patient_name": "Sunita Patel",
+    "medications": ["Metformin XR", "Gliclazide MR", "Telmisartan", "Amlodipine", "Rosuvastatin", "Aspirin"],
+    "dosage": ["1000mg", "60mg", "40mg", "5mg", "10mg", "75mg"],
+    "doctor_name": "Dr Gupta"
+  }
+}

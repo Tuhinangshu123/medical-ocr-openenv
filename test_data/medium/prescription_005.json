@@ -1,0 +1,9 @@
+{
+  "text": "Dr. Rodriguez\nPt: Jennifer Kim, 38\n24/3/24\n\nMigraine treatment:\nSumatriptan 50mg - when headache starts\nPropranolol 40mg - BD for prevention\nAvoid triggers (stress, lack of sleep)\n\nEmergency if vision changes\nDr Rodriguez",
+  "fields": {
+    "patient_name": "Jennifer Kim",
+    "medications": ["Sumatriptan", "Propranolol"],
+    "dosage": ["50mg", "40mg"],
+    "doctor_name": "Dr. Rodriguez"
+  }
+}

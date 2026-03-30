@@ -1,0 +1,9 @@
+{
+  "text": "Wellness Medical Center\nDr. Patricia Lee\nMD, Internal Medicine\n\nPatient Name: David Chen\nAge: 40 years\nDate: 28/03/2024\n\nPrescription:\n1. Omeprazole 20mg - Take before breakfast\n2. Antacid syrup - Take as needed\n\nAvoid spicy food\n\nDr. Patricia Lee",
+  "fields": {
+    "patient_name": "David Chen",
+    "medications": ["Omeprazole", "Antacid syrup"],
+    "dosage": ["20mg", ""],
+    "doctor_name": "Dr. Patricia Lee"
+  }
+}

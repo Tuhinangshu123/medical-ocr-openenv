@@ -1,0 +1,9 @@
+{
+  "text": "Dr Singh\nMr. Rajesh Kumar 58y\n17/3/24\n\nPost MI management:\nAspirin 75mg OD\nAtorvastatin 40mg HS\nMetoprolol 25mg BD\nRamipril 5mg OD\nClopidogrel 75mg OD\n\nECG + Echo 3m\nLFT, Lipid profile 6w\nLifestyle - low salt, exercise, no smoking\n\nDr Singh Cardiology",
+  "fields": {
+    "patient_name": "Rajesh Kumar",
+    "medications": ["Aspirin", "Atorvastatin", "Metoprolol", "Ramipril", "Clopidogrel"],
+    "dosage": ["75mg", "40mg", "25mg", "5mg", "75mg"],
+    "doctor_name": "Dr Singh"
+  }
+}
