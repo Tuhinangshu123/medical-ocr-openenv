@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "medical-ocr-openenv"
+version = "1.0.0"
+description = "OpenEnv-compliant environment for medical prescription OCR and data extraction"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Tuhinangshu Das", email = "tuhinangshudas610@gmail.com"}
+]
+keywords = ["openenv", "medical", "ocr", "healthcare", "prescription", "ai"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "openenv-core>=0.1.0",
+    "pydantic>=2.0.0",
+    "openai>=1.0.0",
+    "pillow>=10.0.0",
+    "pytesseract>=0.3.10",
+    "numpy>=1.24.0",
+    "fastapi>=0.104.0",
+    "uvicorn>=0.24.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Tuhinangshu123/medical-ocr-openenv"
+Repository = "https://github.com/Tuhinangshu123/medical-ocr-openenv"
+"Bug Tracker" = "https://github.com/Tuhinangshu123/medical-ocr-openenv/issues"
+"HuggingFace Space" = "https://huggingface.co/spaces/ryozoryo/medical-ocr-openenv"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+]
+
+[tool.setuptools]
+packages = ["environment", "graders", "inference", "server"]
+
+[tool.black]
+line-length = 100
+target-version = ['py38', 'py39', 'py310', 'py311']
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
