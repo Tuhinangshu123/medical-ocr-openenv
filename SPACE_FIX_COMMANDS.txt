@@ -1,0 +1,98 @@
+# HuggingFace Space is stuck - Here's how to fix it
+
+## IMMEDIATE ACTION: Factory Reboot
+
+1. Go to: https://huggingface.co/spaces/ryozoryo/medical-ocr-openenv/settings
+
+2. Scroll down to "Factory reboot" section
+
+3. Click "Factory reboot" button - this will:
+   - Stop the current build
+   - Clear any stuck processes
+   - Restart from scratch
+
+## AFTER REBOOT: Add Environment Secrets
+
+Once Space shows "Running" status:
+
+1. Go to Settings > Variables and secrets
+
+2. Add these secrets (click "New secret"):
+   
+   Name: OPENAI_API_KEY
+   Value: [GET NEW KEY - your old one was exposed and should be revoked]
+   
+   Name: MODEL_NAME
+   Value: gpt-4
+   
+   Name: API_BASE_URL
+   Value: https://api.openai.com/v1
+
+3. Save each secret
+
+## GET NEW OPENAI API KEY
+
+⚠️ CRITICAL: Your old API key was exposed in git history!
+
+1. Go to: https://platform.openai.com/api-keys
+2. Find the key starting with "sk-proj-Cg5XMgxHW0bfIHkyZ83l..."
+3. Click "Revoke" to disable it
+4. Click "Create new secret key"
+5. Copy the new key
+6. Add it to HuggingFace Space secrets (above)
+
+## VERIFY SPACE IS WORKING
+
+After reboot + secrets added:
+
+# Test health endpoint
+curl https://ryozoryo-medical-ocr-openenv.hf.space/
+
+# Should return:
+# {"name":"Medical Prescription OCR Environment","version":"1.0.0","status":"running","openenv":true}
+
+# Test reset endpoint
+curl -X POST https://ryozoryo-medical-ocr-openenv.hf.space/reset \
+  -H "Content-Type: application/json" \
+  -d '{"task_id": "easy_printed_prescription"}'
+
+## CHECK SPACE STATUS
+
+Space status meanings:
+- "Building" = Installing dependencies (normal, 5-15 min)
+- "Running" = Ready to use ✅
+- "Sleeping" = Inactive, will wake on request
+- "Error" = Build failed, check logs
+
+## IF STILL STUCK AFTER 30 MIN
+
+The Space might be having issues. Try:
+
+1. Check build logs (even if they don't load fully)
+2. Look for error messages
+3. Common issues:
+   - Out of memory during build
+   - Tesseract installation timeout
+   - Python dependency conflicts
+
+## ALTERNATIVE: Rebuild from Scratch
+
+If factory reboot doesn't work:
+
+1. Delete the Space: https://huggingface.co/spaces/ryozoryo/medical-ocr-openenv/settings
+2. Create new Space with same name
+3. Push code again:
+   cd C:\Users\Ryo\Downloads\matrika.zip\matrika\matrika\openenv-adapter
+   git remote remove space
+   git remote add space https://huggingface.co/spaces/ryozoryo/medical-ocr-openenv
+   git push space main --force
+
+## NEXT STEPS AFTER SPACE IS RUNNING
+
+1. ✅ Verify endpoints work (curl commands above)
+2. ✅ Add "openenv" tag to Space (should already be there from README)
+3. ✅ Test with validation script
+4. ✅ Submit Space URL to hackathon
+
+Your Space URL for submission:
+https://huggingface.co/spaces/ryozoryo/medical-ocr-openenv

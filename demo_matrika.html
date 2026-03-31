@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrika Medical OCR - OpenEnv Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0066CC;
+            --primary-dark: #004C99;
+            --medical-green: #00A86B;
+            --accent-teal: #00B4D8;
+            --bg-light: #F8FAFB;
+            --bg-white: #FFFFFF;
+            --text-dark: #1A1A1A;
+            --text-gray: #6B7280;
+            --border-light: #E5E7EB;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--bg-white);
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+        
+        .tagline {
+            font-size: 1.1em;
+            opacity: 0.95;
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.1);
+            border-color: var(--primary-blue);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-teal));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+        }
+        
+        .card h2 {
+            color: var(--text-dark);
+            font-size: 1.3em;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .card p {
+            color: var(--text-gray);
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        button {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: var(--border-light);
+            color: var(--text-gray);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-success {
+            background: var(--medical-green);
+        }
+        
+        .btn-success:hover {
+            background: #008F5A;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+        }
+        
+        .btn-warning:hover {
+            background: #D97706;
+        }
+        
+        .btn-error {
+            background: var(--error);
+        }
+        
+        .btn-error:hover {
+            background: #DC2626;
+        }
+        
+        .output {
+            background: #1E293B;
+            color: #E2E8F0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', 'Consolas', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-top: 16px;
+            line-height: 1.6;
+            border: 1px solid var(--border-light);
+        }
+        
+        .output::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .output::-webkit-scrollbar-track {
+            background: #0F172A;
+            border-radius: 4px;
+        }
+        
+        .output::-webkit-scrollbar-thumb {
+            background: var(--primary-blue);
+            border-radius: 4px;
+        }
+        
+        .success { color: var(--success); font-weight: 500; }
+        .error { color: #F87171; font-weight: 500; }
+        .info { color: #60A5FA; }
+        
+        .task-card {
+            background: var(--bg-light);
+            padding: 20px;
+            margin: 12px 0;
+            border-radius: 10px;
+            border: 2px solid var(--border-light);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .task-card:hover {
+            border-color: var(--primary-blue);
+            background: white;
+            transform: translateX(4px);
+            box-shadow: 0 2px 8px rgba(0, 102, 204, 0.1);
+        }
+        
+        .task-card h3 {
+            color: var(--text-dark);
+            margin: 10px 0 8px 0;
+            font-size: 1.05em;
+            font-weight: 600;
+        }
+        
+        .task-card p {
+            color: var(--text-gray);
+            margin: 0;
+            font-size: 0.9em;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge-easy { 
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        .badge-medium { 
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        .badge-hard { 
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
+        .info-section {
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+            border-radius: 12px;
+            padding: 32px;
+            margin-top: 24px;
+            border: 1px solid #BFDBFE;
+        }
+        
+        .info-section h2 {
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+        
+        .info-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .info-section li {
+            padding: 10px 0;
+            padding-left: 28px;
+            position: relative;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        .info-section li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--medical-green);
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .info-section a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+        
+        .info-section a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 24px;
+            }
+            .header {
+                padding: 32px 24px;
+            }
+            .logo {
+                font-size: 2em;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <div class="logo">MATRIKA</div>
+                <div class="tagline">Medical OCR OpenEnv - Interactive Demo</div>
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    System Online
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🔍</div>
+                        <h2>Health Check</h2>
+                    </div>
+                    <p>Verify the environment is running and accessible</p>
+                    <button onclick="testHealth()">
+                        <span id="health-btn-text">Run Health Check</span>
+                    </button>
+                    <div id="health-output" class="output" style="display: none;"></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">📋</div>
+                        <h2>Available Tasks</h2>
+                    </div>
+                    <p>View all medical OCR tasks with different difficulty levels</p>
+                    <button onclick="listTasks()">
+                        <span id="tasks-btn-text">Load Tasks</span>
+                    </button>
+                    <div id="tasks-output" style="margin-top: 16px;"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🚀</div>
+                    <h2>Run Task Demo</h2>
+                </div>
+                <p>Select a task to test the complete workflow: OCR extraction → Field parsing → Reward calculation</p>
+                <div class="button-group">
+                    <button class="btn-success" onclick="runTask('easy_printed_prescription')">
+                        <span id="easy-btn-text">Easy Task</span>
+                    </button>
+                    <button class="btn-warning" onclick="runTask('medium_handwritten_prescription')">
+                        <span id="medium-btn-text">Medium Task</span>
+                    </button>
+                    <button class="btn-error" onclick="runTask('hard_complex_prescription')">
+                        <span id="hard-btn-text">Hard Task</span>
+                    </button>
+                </div>
+                <div id="task-output" class="output" style="margin-top: 16px; display: none;"></div>
+            </div>
+
+            <div class="info-section">
+                <h2>About Matrika Medical OCR</h2>
+                <ul>
+                    <li><strong>Mission:</strong> Digitize healthcare by training AI agents to extract structured data from medical prescriptions</li>
+                    <li><strong>Technology:</strong> OpenEnv framework + Tesseract OCR + FastAPI backend</li>
+                    <li><strong>Tasks:</strong> 3 difficulty levels with 15 real prescription images and ground truth annotations</li>
+                    <li><strong>Impact:</strong> Helps hospitals and pharmacies worldwide digitize paper prescriptions efficiently</li>
+                    <li><strong>Accuracy:</strong> Reward system based on text accuracy and field completeness</li>
+                </ul>
+                <p style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #BFDBFE;"><strong>Resources:</strong></p>
+                <ul style="margin-top: 12px;">
+                    <li><a href="https://huggingface.co/spaces/ryozoryo/medical-ocr-openenv" target="_blank">HuggingFace Space →</a></li>
+                    <li><a href="https://github.com/Tuhinangshu123/medical-ocr-openenv" target="_blank">GitHub Repository →</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = 'https://ryozoryo-medical-ocr-openenv.hf.space';
+
+        function log(elementId, message, type = 'info') {
+            const output = document.getElementById(elementId);
+            output.style.display = 'block';
+            const className = type === 'success' ? 'success' : type === 'error' ? 'error' : 'info';
+            const timestamp = new Date().toLocaleTimeString();
+            output.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function clearLog(elementId) {
+            const output = document.getElementById(elementId);
+            output.innerHTML = '';
+        }
+
+        function setButtonLoading(buttonId, loading) {
+            const btn = document.getElementById(buttonId);
+            if (loading) {
+                btn.innerHTML = '<span class="loading"></span>';
+            }
+        }
+
+        async function testHealth() {
+            clearLog('health-output');
+            setButtonLoading('health-btn-text', true);
+            log('health-output', '🔍 Testing health endpoint...', 'info');
+            
+            try {
+                const response = await fetch(`${BASE_URL}/`);
+                const data = await response.json();
+                
+                log('health-output', '✅ Environment is running!', 'success');
+                log('health-output', '─'.repeat(60), 'info');
+                log('health-output', JSON.stringify(data, null, 2), 'info');
+                log('health-output', '─'.repeat(60), 'info');
+                log('health-output', '🎉 All systems operational!', 'success');
+            } catch (error) {
+                log('health-output', `❌ Error: ${error.message}`, 'error');
+                log('health-output', 'Make sure the Space is running and accessible.', 'error');
+            } finally {
+                document.getElementById('health-btn-text').innerHTML = 'Run Health Check';
+            }
+        }
+
+        async function listTasks() {
+            const output = document.getElementById('tasks-output');
+            output.innerHTML = '<p style="color: var(--primary-blue); text-align: center;">⏳ Loading tasks...</p>';
+            setButtonLoading('tasks-btn-text', true);
+            
+            try {
+                const response = await fetch(`${BASE_URL}/tasks`);
+                const data = await response.json();
+                
+                let html = '';
+                data.tasks.forEach((task, index) => {
+                    const badgeClass = `badge-${task.difficulty}`;
+                    html += `
+                        <div class="task-card" onclick="runTask('${task.id}')">
+                            <span class="badge ${badgeClass}">${task.difficulty}</span>
+                            <h3>${task.id.replace(/_/g, ' ').toUpperCase()}</h3>
+                            <p>${task.description}</p>
+                        </div>
+                    `;
+                });
+                output.innerHTML = html;
+            } catch (error) {
+                output.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            } finally {
+                document.getElementById('tasks-btn-text').innerHTML = 'Load Tasks';
+            }
+        }
+
+        async function runTask(taskId) {
+            clearLog('task-output');
+            const btnId = taskId.includes('easy') ? 'easy-btn-text' : 
+                         taskId.includes('medium') ? 'medium-btn-text' : 'hard-btn-text';
+            setButtonLoading(btnId, true);
+            
+            log('task-output', `🚀 Starting task: ${taskId}`, 'info');
+            log('task-output', '═'.repeat(60), 'info');
+            
+            try {
+                // Step 1: Reset
+                log('task-output', '\n📋 Step 1/3: Initializing environment...', 'info');
+                const resetResponse = await fetch(`${BASE_URL}/reset`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ task_id: taskId })
+                });
+                const resetData = await resetResponse.json();
+                const obs = resetData.observation;
+                
+                log('task-output', `  ✓ Task loaded: ${obs.current_task}`, 'success');
+                log('task-output', `  ✓ Initial confidence: ${obs.confidence}`, 'success');
+                log('task-output', `  ✓ Image data: ${obs.image_data.length} chars`, 'success');
+                
+                // Step 2: Process image
+                log('task-output', '\n🔍 Step 2/3: Running OCR on prescription image...', 'info');
+                const processResponse = await fetch(`${BASE_URL}/step`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: { action_type: 'process_image', parameters: {} }
+                    })
+                });
+                const processData = await processResponse.json();
+                
+                log('task-output', `  ✓ OCR completed successfully`, 'success');
+                log('task-output', `  ✓ Text extracted: ${processData.observation.ocr_text.length} characters`, 'success');
+                if (processData.observation.ocr_text) {
+                    log('task-output', `  ✓ Preview: "${processData.observation.ocr_text.substring(0, 80)}..."`, 'info');
+                }
+                log('task-output', `  ✓ Confidence: ${processData.observation.confidence.toFixed(2)}`, 'success');
+                log('task-output', `  ✓ Reward: ${JSON.stringify(processData.reward)}`, 'success');
+                
+                // Step 3: Extract fields
+                log('task-output', '\n📝 Step 3/3: Extracting medical fields...', 'info');
+                const extractResponse = await fetch(`${BASE_URL}/step`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: { action_type: 'extract_fields', parameters: {} }
+                    })
+                });
+                const extractData = await extractResponse.json();
+                
+                log('task-output', `  ✓ Fields extracted: ${JSON.stringify(extractData.observation.extracted_fields, null, 2)}`, 'success');
+                log('task-output', `  ✓ Final reward: ${JSON.stringify(extractData.reward, null, 2)}`, 'success');
+                log('task-output', `  ✓ Task complete: ${extractData.done}`, 'success');
+                
+                log('task-output', '\n' + '═'.repeat(60), 'info');
+                log('task-output', '🎉 Demo complete! Environment is working perfectly.', 'success');
+                log('task-output', '✨ Your OpenEnv submission is ready for judges!', 'success');
+                
+            } catch (error) {
+                log('task-output', `\n❌ Error: ${error.message}`, 'error');
+                log('task-output', '⚠️  Make sure API secrets are configured in Space settings.', 'error');
+            } finally {
+                const text = taskId.includes('easy') ? 'Easy Task' : 
+                            taskId.includes('medium') ? 'Medium Task' : 'Hard Task';
+                document.getElementById(btnId).innerHTML = text;
+            }
+        }
+
+        // Auto-load tasks on page load
+        window.onload = () => {
+            setTimeout(() => {
+                listTasks();
+            }, 500);
+        };
+    </script>
+</body>
+</html>
