@@ -7,7 +7,7 @@ name = "medical-ocr-openenv"
 version = "1.0.0"
 description = "OpenEnv-compliant environment for medical prescription OCR and data extraction"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.8.1"
 license = {text = "MIT"}
 authors = [
     {name = "Tuhinangshu Das", email = "tuhinangshudas610@gmail.com"}
@@ -49,6 +49,9 @@ dev = [
     "black>=23.0.0",
     "flake8>=6.0.0",
 ]
+
+[project.scripts]
+server = "server.app:main"
 
 [tool.setuptools]
 packages = ["environment", "graders", "inference", "server"]
