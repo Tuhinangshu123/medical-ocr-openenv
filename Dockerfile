@@ -21,4 +21,5 @@ COPY . .
 EXPOSE 7860
 
 # Run the environment server
-CMD ["python", "server.py"]
+# Support both server.py (Docker mode) and server/app.py (multi-mode)
+CMD ["python", "-m", "uvicorn", "server.app:app", "--host", "0.0.0.0", "--port", "7860"]
