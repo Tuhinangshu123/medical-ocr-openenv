@@ -52,12 +52,14 @@ async def root():
 
 
 @app.post("/reset")
-async def reset(request: ResetRequest) -> Dict[str, Any]:
+async def reset(request: Optional[ResetRequest] = None) -> Dict[str, Any]:
     """Reset environment to initial state"""
     global env
     
     try:
-        env = MedicalOCREnv(task_id=request.task_id)
+        # Use default task if no request body provided
+        task_id = request.task_id if request else "easy_printed_prescription"
+        env = MedicalOCREnv(task_id=task_id)
         observation = env.reset()
         return {"observation": observation.model_dump()}
     except Exception as e:
