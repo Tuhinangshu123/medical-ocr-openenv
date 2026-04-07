@@ -6,9 +6,25 @@ Uses OpenAI API client to run agent against the environment
 import os
 import sys
 from typing import List, Dict, Any
-from openai import OpenAI
-from environment import MedicalOCREnv, Action
-from graders import grade_task
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+try:
+    from openai import OpenAI
+except ImportError as e:
+    logger.error(f"Failed to import openai: {e}")
+    logger.info("Install with: pip install openai")
+    sys.exit(1)
+
+try:
+    from environment import MedicalOCREnv, Action
+    from graders import grade_task
+except ImportError as e:
+    logger.error(f"Failed to import environment modules: {e}")
+    sys.exit(1)
 
 
 # Read from environment variables as per requirements
@@ -17,26 +33,40 @@ MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 if not OPENAI_API_KEY:
-    print("ERROR: OPENAI_API_KEY environment variable not set")
-    sys.exit(1)
+    logger.warning("OPENAI_API_KEY environment variable not set")
+    logger.warning("Using mock mode for testing")
+    MOCK_MODE = True
+else:
+    MOCK_MODE = False
 
 
 def run_agent_on_task(task_id: str, max_steps: int = 10) -> float:
     """Run agent on a single task and return final score"""
     
-    # Initialize environment
-    env = MedicalOCREnv(task_id=task_id)
-    observation = env.reset()
+    try:
+        # Initialize environment
+        env = MedicalOCREnv(task_id=task_id)
+        observation = env.reset()
+    except Exception as e:
+        logger.error(f"Failed to initialize environment for {task_id}: {e}")
+        return 0.0
     
-    # Initialize OpenAI client
-    client = OpenAI(
-        api_key=OPENAI_API_KEY,
-        base_url=API_BASE_URL
-    )
+    # Initialize OpenAI client if not in mock mode
+    if not MOCK_MODE:
+        try:
+            client = OpenAI(
+                api_key=OPENAI_API_KEY,
+                base_url=API_BASE_URL
+            )
+        except Exception as e:
+            logger.error(f"Failed to initialize OpenAI client: {e}")
+            return 0.0
+    else:
+        client = None
     
-    print(f"\n{'='*60}")
-    print(f"Running task: {task_id}")
-    print(f"{'='*60}")
+    logger.info(f"\n{'='*60}")
+    logger.info(f"Running task: {task_id}")
+    logger.info(f"{'='*60}")
     
     done = False
     step = 0
@@ -64,49 +94,64 @@ Choose the next action to maximize OCR accuracy and field extraction completenes
 Respond with ONLY the action type (e.g., "process_image").
 """
         
-        # Get action from model
+        # Get action from model or use simple heuristic in mock mode
         try:
-            response = client.chat.completions.create(
-                model=MODEL_NAME,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.7,
-                max_tokens=50
-            )
-            
-            action_text = response.choices[0].message.content.strip().lower()
-            
-            # Parse action
-            if "process_image" in action_text:
-                action = Action(action_type="process_image")
-            elif "extract_fields" in action_text:
-                action = Action(action_type="extract_fields")
-            elif "validate_output" in action_text:
-                action = Action(action_type="validate_output")
-            elif "retry_with_ensemble" in action_text or "ensemble" in action_text:
-                action = Action(action_type="retry_with_ensemble")
+            if MOCK_MODE:
+                # Simple heuristic agent for testing
+                if step == 1:
+                    action = Action(action_type="process_image")
+                elif step == 2:
+                    action = Action(action_type="extract_fields")
+                elif step == 3:
+                    action = Action(action_type="validate_output")
+                else:
+                    action = Action(action_type="process_image")
             else:
-                # Default fallback
-                action = Action(action_type="process_image")
+                response = client.chat.completions.create(
+                    model=MODEL_NAME,
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.7,
+                    max_tokens=50
+                )
+                
+                action_text = response.choices[0].message.content.strip().lower()
+                
+                # Parse action
+                if "process_image" in action_text:
+                    action = Action(action_type="process_image")
+                elif "extract_fields" in action_text:
+                    action = Action(action_type="extract_fields")
+                elif "validate_output" in action_text:
+                    action = Action(action_type="validate_output")
+                elif "retry_with_ensemble" in action_text or "ensemble" in action_text:
+                    action = Action(action_type="retry_with_ensemble")
+                else:
+                    # Default fallback
+                    action = Action(action_type="process_image")
             
-            print(f"Step {step}: {action.action_type}")
+            logger.info(f"Step {step}: {action.action_type}")
             
             # Execute action
             observation, reward, done, info = env.step(action)
-            print(f"  Reward: {reward.score:.3f} (accuracy: {reward.accuracy:.3f}, completeness: {reward.completeness:.3f})")
+            logger.info(f"  Reward: {reward.score:.3f} (accuracy: {reward.accuracy:.3f}, completeness: {reward.completeness:.3f})")
             
         except Exception as e:
-            print(f"Error at step {step}: {e}")
+            logger.error(f"Error at step {step}: {e}")
             break
     
     # Final grading
-    state = env.state()
-    final_score = grade_task(
-        task_id,
-        state["observation"],
-        state["ground_truth"]
-    )
+    try:
+        state = env.state()
+        final_score = grade_task(
+            task_id,
+            state["observation"],
+            state["ground_truth"]
+        )
+    except Exception as e:
+        logger.error(f"Failed to grade task {task_id}: {e}")
+        final_score = 0.0
     
-    print(f"\nFinal Score: {final_score:.3f}")
+    logger.info(f"\nFinal Score: {final_score:.3f}")
     return final_score
 
 
@@ -119,35 +164,49 @@ def main():
         "hard_complex_prescription"
     ]
     
-    print("="*60)
-    print("Medical OCR Environment - Baseline Inference")
-    print("="*60)
-    print(f"Model: {MODEL_NAME}")
-    print(f"API Base: {API_BASE_URL}")
-    
-    scores = {}
-    
-    for task_id in tasks:
-        try:
-            score = run_agent_on_task(task_id)
-            scores[task_id] = score
-        except Exception as e:
-            print(f"Failed on task {task_id}: {e}")
-            scores[task_id] = 0.0
-    
-    # Summary
-    print("\n" + "="*60)
-    print("BASELINE RESULTS")
-    print("="*60)
-    for task_id, score in scores.items():
-        print(f"{task_id:40s}: {score:.3f}")
-    
-    avg_score = sum(scores.values()) / len(scores)
-    print(f"\n{'Average Score':40s}: {avg_score:.3f}")
-    print("="*60)
-    
-    return scores
+    try:
+        logger.info("="*60)
+        logger.info("Medical OCR Environment - Baseline Inference")
+        logger.info("="*60)
+        logger.info(f"Model: {MODEL_NAME}")
+        logger.info(f"API Base: {API_BASE_URL}")
+        logger.info(f"Mock Mode: {MOCK_MODE}")
+        
+        scores = {}
+        
+        for task_id in tasks:
+            try:
+                score = run_agent_on_task(task_id)
+                scores[task_id] = score
+            except Exception as e:
+                logger.error(f"Failed on task {task_id}: {e}")
+                scores[task_id] = 0.0
+        
+        # Summary
+        logger.info("\n" + "="*60)
+        logger.info("BASELINE RESULTS")
+        logger.info("="*60)
+        for task_id, score in scores.items():
+            logger.info(f"{task_id:40s}: {score:.3f}")
+        
+        avg_score = sum(scores.values()) / len(scores) if scores else 0.0
+        logger.info(f"\n{'Average Score':40s}: {avg_score:.3f}")
+        logger.info("="*60)
+        
+        return scores
+        
+    except Exception as e:
+        logger.error(f"Fatal error in main: {e}")
+        import traceback
+        traceback.print_exc()
+        return {}
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        logger.error(f"Unhandled exception: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
