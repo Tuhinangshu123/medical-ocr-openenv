@@ -43,12 +43,16 @@ else:
 def run_agent_on_task(task_id: str, max_steps: int = 10) -> float:
     """Run agent on a single task and return final score"""
     
+    # Print START block
+    print(f"[START] task={task_id}", flush=True)
+    
     try:
         # Initialize environment
         env = MedicalOCREnv(task_id=task_id)
         observation = env.reset()
     except Exception as e:
         logger.error(f"Failed to initialize environment for {task_id}: {e}")
+        print(f"[END] task={task_id} score=0.0 steps=0", flush=True)
         return 0.0
     
     # Initialize OpenAI client if not in mock mode
@@ -60,6 +64,7 @@ def run_agent_on_task(task_id: str, max_steps: int = 10) -> float:
             )
         except Exception as e:
             logger.error(f"Failed to initialize OpenAI client: {e}")
+            print(f"[END] task={task_id} score=0.0 steps=0", flush=True)
             return 0.0
     else:
         client = None
@@ -133,6 +138,10 @@ Respond with ONLY the action type (e.g., "process_image").
             
             # Execute action
             observation, reward, done, info = env.step(action)
+            
+            # Print STEP block
+            print(f"[STEP] step={step} reward={reward.score:.3f}", flush=True)
+            
             logger.info(f"  Reward: {reward.score:.3f} (accuracy: {reward.accuracy:.3f}, completeness: {reward.completeness:.3f})")
             
         except Exception as e:
@@ -150,6 +159,9 @@ Respond with ONLY the action type (e.g., "process_image").
     except Exception as e:
         logger.error(f"Failed to grade task {task_id}: {e}")
         final_score = 0.0
+    
+    # Print END block
+    print(f"[END] task={task_id} score={final_score:.3f} steps={step}", flush=True)
     
     logger.info(f"\nFinal Score: {final_score:.3f}")
     return final_score
