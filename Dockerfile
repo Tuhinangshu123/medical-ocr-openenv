@@ -1,5 +1,4 @@
-# Try using the exact digest from error - might be cached
-FROM python@sha256:f966cda3c2d5b990db2a7af10ef891f5ca685c7d0c6a83378948f1cd09c27ec8
+FROM python:3.11-slim
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1
